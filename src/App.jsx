@@ -6,11 +6,28 @@ const App = () => {
   const [inputValue, setInputValue] = useState('');
 
   const handleButtonClick = (text) => {
+    const lastChar = inputValue.slice(-1);
+    const operators = ['+', '-', '*', '/'];
+
+    if (operators.includes(lastChar) && operators.includes(text)) {
+      return;
+    }
+
     setInputValue(prevValue => prevValue + text);
   };
 
   const removeDigits = () => {
     setInputValue(prevValue => prevValue.slice(0, -1));
+  };
+
+  const handleEvaluate = () => {
+    try {
+      const result = eval(inputValue);
+      setInputValue(result.toString());
+    } catch (error) {
+      console.error(error);
+      setInputValue('Error');
+    }
   };
 
   return (
@@ -31,7 +48,7 @@ const App = () => {
         <Button text="*" onButtonClick={handleButtonClick} />
         <Button text="+" onButtonClick={handleButtonClick} />
         <Button text="-" onButtonClick={handleButtonClick} />
-        <Button text="=" onButtonClick={handleButtonClick} />
+        <Button text="=" onButtonClick={handleEvaluate} />
         <Button text={<FaBackspace />} onButtonClick={removeDigits} />
       </div>
     </div>
